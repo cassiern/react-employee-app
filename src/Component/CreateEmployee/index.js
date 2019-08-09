@@ -18,7 +18,7 @@ class CreateEmployee extends Component {
     render() {
         return (
             <form>
-                <h1>This is Register Form</h1>
+                <h1>This is Employee Creation Form</h1>
                 <label>Employee Name:</label> <input type="text" name="name" value={this.state.name} placeholder="FirstName MI LastName" onChange={this.handleChange} />
                 <label>Position: </label> <input type="text" name="position" value={this.state.position} placeholder="Enter Title / Position" onChange={this.handleChange} />
                 <label>Birthdate: </label> <input type="text" name="birthDate" value={this.state.birthDate} placeholder="Birthday (00/00/0000)" onChange={this.handleChange} />
