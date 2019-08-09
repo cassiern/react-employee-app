@@ -3,6 +3,7 @@ import Login from '../Login/index';
 import CreateEmployee from '../CreateEmployee/index';
 import EmployeeList from '../EmployeeList/index';
 import Header from '../Header/index';
+import Register from '../Register/index';
 
 
 class MainContainer extends Component {
@@ -17,6 +18,7 @@ class MainContainer extends Component {
                 <Login />
                 <CreateEmployee />
                 <EmployeeList />
+                <Register />
             </div>
         );
     }
