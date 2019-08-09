@@ -29,33 +29,31 @@ class Register extends Component {
     console.log(parsedRegister, ' response from register');
 
     if(parsedRegister.status.message === 'User Logged In'){
-      console.log('logged in')
-      //programmatically switch between a route
-
+      console.log('==== logged in ======')
     }
 }
 	render(){
 		return(
-			<div>
-			<h1>Register Form</h1>
-     <form onSubmit={this.handleSubmit}>
-      <label>
-        Username:
-        <input type='text' name='username' onChange={this.handleChange}/>
-      </label>
-      <label>
-        Password:
-        <input type='password' name='password' onChange={this.handleChange}/>
-      </label>
+<div>
+		<h1>Register Form</h1>
+     	<form onSubmit={this.handleSubmit}>
+      		<label>
+        	Username:
+        	<input type='text' placeholder='username' name='username' onChange={this.handleChange} value={this.state.username}/>
+      		</label>
+     		 <label>
+        		Password:
+        		<input type='password' placeholder='password' name='password' onChange={this.handleChange}/>
+      		</label>
 
-      <label>
-      Admin:
-      <select value='admin'>
-      	<option value=''></option>
-      	<option value='false'>No</option> 
-      <option value='true'>Yes</option>
-      </select>
-      </label>
+      		<label>
+      			Admin:
+      			<select value='admin'>
+      				<option value=''></option>
+      				<option value='false'>No</option> 
+      				<option value='true'>Yes</option>
+      			</select>
+      		</label>
 
       <button type='Submit'>
         Register
