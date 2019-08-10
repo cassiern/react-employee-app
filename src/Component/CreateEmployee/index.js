@@ -23,7 +23,7 @@ class CreateEmployee extends Component {
                 <label>Position: </label> <input type="text" name="position" value={this.state.position} placeholder="Enter Title / Position" onChange={this.handleChange} />
                 <label>Birthdate: </label> <input type="text" name="birthDate" value={this.state.birthDate} placeholder="Birthday (00/00/0000)" onChange={this.handleChange} />
                 <label>Department: </label> <input type="text" name="department" value={this.state.department} placeholder="Enter Department" onChange={this.handleChange} />
-                <label>Annual Salary: </label> <input type="text" name="annualSalary" value={this.state.annualSalary} Placeholder="Employee Salary " onChange={this.handleChange} />
+                <label>Annual Salary: </label> <input type="text" name="annualSalary" value={this.state.annualSalary} placeholder="Employee Salary " onChange={this.handleChange} />
                 <button type="submit">Create Employee</button>
             </form>
 
