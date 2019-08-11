@@ -6,6 +6,7 @@ class Login extends Component {
             username: '',
             password: '',
             admin: false,
+            userId: "",
             isLoggedIn: false
         }
     }
