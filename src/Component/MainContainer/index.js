@@ -14,10 +14,21 @@ class MainContainer extends Component {
         }
     }
     render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    // if(this.state.isLoggedIn){
+    //     <button action='/' onClick={this.handleLogoutClick}> Logout</button>
+    //     show = <CreationEmployee />
+    // } else {
+    //     button = <button action='/login' onClick={this.handleLoginClick}> Login</button>
+    //     show = <Register /> 
+    //     loginForm = <Login />
+    // }
         return (
             <div className="employeeContainer">
                 <Header />
-
+                <EmployeeList />
+                {isLoggedIn ?<CreateEmployee /> : <Register />}
+                
             </div>
         );
     }
