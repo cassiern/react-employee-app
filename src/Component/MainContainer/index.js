@@ -107,13 +107,13 @@ class MainContainer extends Component {
                 this.setState({
                     employees: [...employeesResponse.data]  //spread operator - takes the array and empties the contents into movies
                 })
-                console.log(this.state.employees, 'after push')
+                console.log(this.state.employees, 'after push');
             }
         } catch (err) {
             console.log(err, 'getEmployees Error');
-            isLoggedIn: false
         }
     }
+
     render() {
     const isLoggedIn = this.state.isLoggedIn;
     // if(this.state.isLoggedIn){
@@ -136,4 +136,3 @@ class MainContainer extends Component {
 }
 
 export default MainContainer;
-//getEmployees={this.getEmployees()}
