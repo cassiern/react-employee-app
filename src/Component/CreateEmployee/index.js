@@ -35,6 +35,7 @@ class CreateEmployee extends Component {
         return (
             <form style={formStyle} onSubmit={this.props.addEmployee.bind(null, this.state)}>
                 <h1>This is Employee Creation Form</h1>
+
                 <div className="row" style={rowStyle}>
                     <div className="col" style={colStyle}>
                         <label>Employee Name:</label>
@@ -51,6 +52,7 @@ class CreateEmployee extends Component {
                         <div><input type="text" name="annualSalary" value={this.state.annualSalary} placeholder="Employee Salary " onChange={this.handleChange} /></div>
                     </div>
                 </div>
+
                 <button type="submit">Create Employee</button>
             </form >
 

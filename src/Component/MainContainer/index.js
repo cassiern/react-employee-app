@@ -16,7 +16,7 @@ class MainContainer extends Component {
                 password: '',
                 admin: false,
                 userId: "",
-                logged: false,
+                isLoggedIn: false,
             }
 
         }
@@ -111,16 +111,25 @@ class MainContainer extends Component {
             }
         } catch (err) {
             console.log(err, 'getEmployees Error');
+            isLoggedIn: false
         }
     }
     render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    // if(this.state.isLoggedIn){
+    //     <button action='/' onClick={this.handleLogoutClick}> Logout</button>
+    //     show = <CreationEmployee />
+    // } else {
+    //     button = <button action='/login' onClick={this.handleLoginClick}> Login</button>
+    //     show = <Register /> 
+    //     loginForm = <Login />
+    // }
         return (
             <div className="employeeContainer">
                 <Header />
-                <Login />
-                <CreateEmployee addEmployee={this.addEmployee} />
                 <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
-                <Register />
+                {isLoggedIn ? <CreateEmployee addEmployee={this.addEmployee} /> : <Register />}
+
             </div>
         );
     }

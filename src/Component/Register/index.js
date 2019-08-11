@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-
+import CreateEmployee from '../CreateEmployee';
+import Login from '../Login';
 class Register extends Component {
 	constructor(){
 		super();
 		this.state ={
 			username: '',
 			password: '',
-			admin: false
+			admin: false,
+      isLoggedIn: false
 		}
 	}
  handleChange = (e) => {
@@ -23,44 +25,58 @@ class Register extends Component {
         'Content-Type': 'application/json'
       }
     });
-
+    this.setState({
+      isLoggedIn: true
+    })
     const parsedRegister = await register.json();
 
     console.log(parsedRegister, ' response from register');
 
     if(parsedRegister.status.message === 'User Logged In'){
-      console.log('logged in')
-      //programmatically switch between a route
-
+      console.log('==== logged in ======')
     }
 }
 	render(){
-		return(
-			<div>
-			<h1>Register Form</h1>
-     <form onSubmit={this.handleSubmit}>
-      <label>
-        Username:
-        <input type='text' name='username' onChange={this.handleChange}/>
-      </label>
-      <label>
-        Password:
-        <input type='password' name='password' onChange={this.handleChange}/>
-      </label>
+          let isLoggedIn = this.state.isLoggedIn;
+          let createUser;
+          let showReg;
+          let showLogin;
+          if(isLoggedIn){
 
-      <label>
-      Admin:
-      <select value='admin'>
-      	<option value=''></option>
-      	<option value='false'>No</option> 
-      <option value='true'>Yes</option>
-      </select>
-      </label>
+          return createUser = <CreateEmployee />
+
+            } else{
+              showLogin = <Login />
+              showReg = <Register />
+            }         
+		return(      
+<div>
+		<h1>Register Form</h1>
+     	<form onSubmit={this.handleSubmit}>
+      		<label>
+        	Username:
+        	<input type='text' placeholder='username' name='username' onChange={this.handleChange} value={this.state.username}/>
+      		</label>
+     		 <label>
+        		Password:
+        		<input type='password' placeholder='password' name='password' onChange={this.handleChange}/>
+      		</label>
+
+      		<label>
+      			Admin:
+      			<select value='admin'>
+      				<option value=''></option>
+      				<option value='false'>No</option> 
+      				<option value='true'>Yes</option>
+      			</select>
+      		</label>
 
       <button type='Submit'>
         Register
       </button>
      </form>
+     {createUser}
+     {showLogin}
 </div>
 
 			)

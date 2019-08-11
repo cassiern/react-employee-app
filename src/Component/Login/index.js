@@ -7,7 +7,7 @@ class Login extends Component {
             password: '',
             admin: false,
             userId: "",
-            logged: false,
+            isLoggedIn: false
         }
     }
     handleChange = (e) => {
@@ -31,9 +31,9 @@ class Login extends Component {
 
         if (parsedlogin.status.message === 'User Logged In') {
             console.log('logged in')
-            //programmatically switch between a route
         }
     }
+
     render() {
         return (
             <div>
@@ -47,7 +47,7 @@ class Login extends Component {
                         Password:
                 <input type='password' name='password' value={this.state.password} placeholder="password" onChange={this.handleChange} />
                     </label>
-                    <button type='Submit'>Login</button>
+                    <input type='submit' value='login' />
                 </form>
             </div>
         );
