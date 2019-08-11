@@ -5,7 +5,9 @@ class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            admin: false
+            admin: false,
+            userId: "",
+            logged: false,
         }
     }
     handleChange = (e) => {
