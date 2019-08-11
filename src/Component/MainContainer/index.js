@@ -9,16 +9,15 @@ import Register from '../Register/index';
 class MainContainer extends Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            isLoggedIn: false
+        }
     }
     render() {
         return (
             <div className="employeeContainer">
                 <Header />
-                <Login />
-                <CreateEmployee />
-                <EmployeeList />
-                <Register />
+
             </div>
         );
     }

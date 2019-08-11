@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
-
+import CreateEmployee from '../CreateEmployee';
+import Login from '../Login';
 class Register extends Component {
 	constructor(){
 		super();
 		this.state ={
 			username: '',
 			password: '',
-			admin: false
+			admin: false,
+      isLoggedIn: false
 		}
 	}
  handleChange = (e) => {
@@ -23,7 +25,9 @@ class Register extends Component {
         'Content-Type': 'application/json'
       }
     });
-
+    this.setState({
+      isLoggedIn: true
+    })
     const parsedRegister = await register.json();
 
     console.log(parsedRegister, ' response from register');
@@ -33,7 +37,19 @@ class Register extends Component {
     }
 }
 	render(){
-		return(
+          let isLoggedIn = this.state.isLoggedIn;
+          let createUser;
+          let showReg;
+          let showLogin;
+          if(isLoggedIn){
+
+          return createUser = <CreateEmployee />
+
+            } else{
+              showLogin = <Login />
+              showReg = <Register />
+            }         
+		return(      
 <div>
 		<h1>Register Form</h1>
      	<form onSubmit={this.handleSubmit}>
@@ -59,6 +75,8 @@ class Register extends Component {
         Register
       </button>
      </form>
+     {createUser}
+     {showLogin}
 </div>
 
 			)
