@@ -58,8 +58,6 @@ render(){
 	}
     return (
     	<div>
-        {button}
-        {show}
         </div>
     )
 }
