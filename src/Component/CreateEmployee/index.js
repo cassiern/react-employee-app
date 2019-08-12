@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
+
 
 class CreateEmployee extends Component {
     constructor(props) {
@@ -52,8 +54,7 @@ class CreateEmployee extends Component {
                         <div><input type="text" name="annualSalary" value={this.state.annualSalary} placeholder="Employee Salary " onChange={this.handleChange} /></div>
                     </div>
                 </div>
-
-                <button type="submit">Create Employee</button>
+                <Button type="submit" outline color="warning">Create Employee</Button>
             </form >
 
         );

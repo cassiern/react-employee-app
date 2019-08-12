@@ -26,9 +26,20 @@
   flex-direction: column; 
 }
 
+.listButton {
+  display: flex;
+  margin: 10px;
+}
 
-
-
+button, input, optgroup, select, textarea, label {
+  display: flex;
+  font-family: inherit;
+  margin: 10px;
+  align-self: baseline;
+  justify-content: center;
+  color: black;
+  font-weight: bold;
+}
 .App-link {
   color: #61dafb;
 }

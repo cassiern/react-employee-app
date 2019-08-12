@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
 import '../../App.css';
 
 class Login extends Component {
@@ -29,7 +30,7 @@ class Login extends Component {
                         Password:
                 <input type='password' name='password' value={this.state.password} placeholder="password" onChange={this.handleChange} />
                     </label>
-                    <button type="submit">Login</button>
+                    <Button type="submit" color="warning">Login</Button>
                 </form>
             </div>
         );
