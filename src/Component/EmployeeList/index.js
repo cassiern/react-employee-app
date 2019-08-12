@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const EmployeeList = (props) => {
-
     const itemStyle = {
         border: "1px solid black",
         shadowBox: "0 0 2px black",
@@ -10,15 +9,6 @@ const EmployeeList = (props) => {
         width: "150px"
     }
     const displayEmployeeList = props.employeeList.map((employee) => {
-        // const employeeObject = Object.entries(employee)
-        // console.log(employeeObject)
-        // const displayObject = employeeObject.map((item) => {
-        //     return (
-        //         < li key={item[0]}>
-        //             <label>{item[0]}</label>: {item[1]}
-        //         </li >
-        //     )
-        // });
         console.log(employee, 'employee passsed to displayEmployee');
         return (
             <li style={itemStyle} key={employee._id}>
@@ -46,5 +36,14 @@ const EmployeeList = (props) => {
 
 export default EmployeeList;
 
-                //
-// onClick = {props.showModal.bind(null, employee)}
+
+//Unused Code
+// const employeeObject = Object.entries(employee)
+// console.log(employeeObject)
+// const displayObject = employeeObject.map((item) => {
+//     return (
+//         < li key={item[0]}>
+//             <label>{item[0]}</label>: {item[1]}
+//         </li >
+//     )
+// });

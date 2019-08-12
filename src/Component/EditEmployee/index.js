@@ -1,37 +1,45 @@
 import React from 'react';
 
-const EmployeeList = (props) => {
-    const itemStyle = {
-        border: "1px solid black",
-        shadowBox: "0 0 2px black",
-        listStyle: "none",
+const EditEmployee = (props) => {
+    const formStyle = {
+        // listStyle: "none",
         padding: "1rem",
-        width: "150px"
     }
-    const displayEmployeeList = props.employeeList.map((employee) => {
-        return (
-            <li style={itemStyle} key={employee._id}>
-                <h1>{employee.title} </h1>
-                <span>
-                    <strong><label>Employee Name:   </label></strong><br />{employee.name}<br /><br />
-                    <strong><label> Department:   </label></strong><br />{employee.department}
-                </span><br /><br />
-                <span>
-                    <button onClick={props.deleteEmployee.bind(null, employee)}>delete</button><br /><br />
-                    <button onClick={props.showEmployee.bind(null, employee)}>View Employee</button>
-                </span>
-
-            </li>
-        )
-    })
-
+    const colStyle = {
+        // listStyle: "none",
+        padding: "1rem 4rem",
+        display: "flex",
+        flexDirection: "column",
+    }
+    const rowStyle = {
+        // listStyle: "none",
+        display: "flex",
+        justifyContent: "center",
+    }
     return (
-        <div >
-            <h1>Employee List</h1>
-            <div className="row">{displayEmployeeList}</div>
+        <div>
+            <h4> View Employee Information</h4>
+            <form onSubmit={props.editEmployee} style={formStyle}>
+                <h1>This is Employee Edit Form</h1>
+                <div className="row" style={rowStyle}>
+                    <div className="col" style={colStyle}>
+                        <label>Employee Name:</label>
+                        <label>Position: </label>
+                        <label>Birthdate: </label>
+                        <label>Department: </label>
+                        <label>Annual Salary: </label>
+                    </div>
+                    <div className="col" style={colStyle}>
+                        <div> <input type="text" name="name" value={props.employeeToEdit.name} onChange={props.handleFormChange} /></div>
+                        <div><input type="text" name="position" value={props.employeeToEdit.position} onChange={props.handleFormChange} /></div>
+                        <div><input type="text" name="birthDate" value={props.employeeToEdit.birthDate} onChange={props.handleFormChange} /></div>
+                        <div><input type="text" name="department" value={props.employeeToEdit.department} onChange={props.handleFormChange} /></div>
+                        <div><input type="text" name="annualSalary" value={props.employeeToEdit.annualSalary} onChange={props.handleFormChange} /></div>
+                    </div>
+                </div>
+                <input type='Submit' />
+            </form>
         </div>
     )
 }
-
-export default EmployeeList;
-
+export default EditEmployee;
