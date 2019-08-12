@@ -21,7 +21,7 @@ class Login extends Component {
             credentials: 'include',
             body: JSON.stringify(this.state),
             headers: {
-                'Content-Type': 'application/json'
+            'Content-Type': 'application/json'
             }
         });
 
@@ -32,6 +32,9 @@ class Login extends Component {
         if (parsedlogin.status.message === 'User Logged In') {
             console.log('logged in')
         }
+        this.setState({
+            isLoggedIn: true
+        })
     }
 
     render() {
@@ -47,7 +50,6 @@ class Login extends Component {
                         Password:
                 <input type='password' name='password' value={this.state.password} placeholder="password" onChange={this.handleChange} />
                     </label>
-                    <input type='submit' value='login'/>
                 </form>
             </div>
         );

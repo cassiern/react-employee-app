@@ -16,7 +16,6 @@ class Register extends Component {
   }
   handleSubmit = async (e) => {
     e.preventDefault();
-
     const register = await fetch('http://localhost:9000/auth/register', {
       method: 'POST',
       credentials: 'include',
@@ -25,22 +24,23 @@ class Register extends Component {
         'Content-Type': 'application/json'
       }
     });
-    this.setState({
-      isLoggedIn: true
-    })
     const parsedRegister = await register.json();
-
     console.log(parsedRegister, ' response from register');
 
     if(parsedRegister.status.message === 'User Logged In'){
       console.log('==== logged in ======')
+      console.log(this.state, 'this.state')
     }
+    this.setState({
+      isLoggedIn: true
+    })
 }
 	render(){
           let isLoggedIn = this.state.isLoggedIn;
           let createUser;
           let showReg;
           let showLogin;
+          
           if(isLoggedIn){
 
           return createUser = <CreateEmployee />
@@ -64,19 +64,14 @@ class Register extends Component {
 
       		<label>
       			Admin:
-      			<select value='admin'>
-      				<option value=''></option>
+      			<select>
       				<option value='false'>No</option> 
       				<option value='true'>Yes</option>
       			</select>
       		</label>
-
-      <button type='Submit'>
-        Register
-      </button>
      </form>
      {createUser}
-     {showLogin}
+     <Login />
 </div>
 
 			)
