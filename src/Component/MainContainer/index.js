@@ -4,7 +4,9 @@ import CreateEmployee from '../CreateEmployee/index';
 import EmployeeList from '../EmployeeList/index';
 // import Header from '../Header/index';
 import Register from '../Register/index';
-import EditEmployee from '../EditEmployee';
+
+import EditEmployee from '../EditEmployee/index';
+
 
 class MainContainer extends Component {
     constructor(props) {
@@ -17,14 +19,53 @@ class MainContainer extends Component {
                 admin: false,
                 userId: "",
                 isLoggedIn: false,
-            }
-
+            },
+            showEmployeeModal: false,
+            employeeToEdit: {
+                _id: null,
+                username: '',
+                password: '',
+                admin: false,
+                userId: "",
+                isLoggedIn: false,
+            },
+            employeeToDelete: {
+                _id: null,
+                username: '',
+                password: '',
+                admin: false,
+                userId: "",
+                isLoggedIn: false,
+            },
         }
     }
-    
+
     componentDidMount() {
-        this.getEmployees();
+        this.getEmployees(this.state.employees);
     }
+    // handleLoginSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     const login = await fetch('http://localhost:9000/auth/login', {
+    //         method: 'POST',
+    //         credentials: 'include',
+    //         body: JSON.stringify(this.state),
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     });
+
+    //     const parsedlogin = await login.json();
+
+    //     console.log(parsedlogin, ' response from login');
+
+    //     if (parsedlogin.status.message === 'User Logged In') {
+    //         console.log('logged in')
+    //     }
+    //     this.setState({
+    //         isLoggedIn: { ...this.state.currentUser.isLoggedIn]: true}
+    //     })
+    // }
     addEmployee = async (employee, e) => {
         e.preventDefault();
         try {
@@ -53,8 +94,65 @@ class MainContainer extends Component {
             return err;
         }
     }
+    showEmployee = (employee) => {
+        console.log(employee, "employee to edit at time of Show Employee");
+        // this.state.employeeToEdit = employee;
+        this.setState({
+            employeeToEdit: employee,
+            showEmployeeModal: !this.state.showEmployeeModal,
+        })
+        console.log(this.state.employeeToEdit, 'employeeTo Edit after setState in showEmployee')
+    }
+    EditEmployee = async (e) => {
+        e.preventDefault();
+        console.log(this.state.employeeToEdit, '<Employee to edit at time of editEmployee Calle');
+        try {
+
+            const editRequest = await fetch('http://localhost:9000/api/v1/employee/' + this.state.employeeToEdit._id, {
+                method: 'PUT',
+                credentials: 'include',
+                body: JSON.stringify(this.state.employeeToEdit),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (editRequest.status !== 200) {
+                throw Error('editRequest not working')
+            }
+
+            const editResponse = await editRequest.json();
+
+            const editedEmployeesArray = this.state.employees.map((employee) => {
+                // console.log(employee, 'data from Employee')
+                if (employee._id === editResponse.data._id) {
+                    employee = editResponse.data
+                }
+                return employee;
+            })
+            // console.log(editedEmployeeArray, 'edited Employees after Map Method')
+            /// remakes a new array after checking in editedEmployeeArray
+            this.setState({
+                employees: editedEmployeesArray,
+                showEmployeeModal: false,
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    handleFormChange = (e) => {
+
+        this.setState({
+            employeeToEdit: {
+                ...this.state.employeeToEdit,
+                [e.target.name]: e.target.value
+            }
+        })
+        //console.log(this.state.employeeToEdit, "updating of state in handlechange")
+    }
     deleteEmployee = async (deletedEmployee, e) => {
-        // e.preventDefault();
+        e.preventDefault();
         console.log('deleted employee', deletedEmployee);
         try {
             const deleteEmployee = await fetch('http://localhost:9000/api/v1/employee/' + deletedEmployee._id, {
@@ -84,6 +182,7 @@ class MainContainer extends Component {
         }
     }
     getEmployees = async () => {
+        console.log(this.state.currentUser);
         try {
             const responseGetEmployees = await fetch('http://localhost:9000/api/v1/employee', {
                 method: "GET",
@@ -104,88 +203,70 @@ class MainContainer extends Component {
             console.log(err, 'getEmployees Error');
         }
     }
-    afterLogin = () =>  { return(
-        <div>
-        <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
-        <CreateEmployee addEmployee={this.addEmployee} />
-        </div>
-        )}
-handleChange = (e) => {
-    this.setState({[e.currentTarget.name]: e.currentTarget.value});
-  }
-  handleLogoutClick = () =>{
-    this.setState({
-        isLoggedIn: false
-    })
-  }
-  handleLoginClick = () => {
-    this.setState({
-        isLoggedIn: true
-    })
-  }
-handleRegister = () => {
-    this.setState({
-        isLoggedIn: true
-    })
-}
-
-
-
-
-
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    const register = await fetch('http://localhost:9000/auth/register', {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    const parsedRegister = await register.json();
-    console.log(parsedRegister, ' response from register');
-
-    if(parsedRegister.status.message === 'User Logged In'){
-      console.log('==== logged in ======')
-      console.log(this.state, 'this.state')
+    afterLogin = () => {
+        return (
+            <div>
+                <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
+                <CreateEmployee addEmployee={this.addEmployee} />
+            </div>
+        )
     }
-    this.setState({
-      isLoggedIn: true
-    })
-}
+    handleChange = (e) => {
+        this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    }
+    handleLogoutClick = () => {
+        this.setState({
+            isLoggedIn: false
+        })
+    }
+    handleLoginClick = () => {
+        this.setState({
+            isLoggedIn: true
+        })
+
+    }
+    handleSubmit = async (e) => {
+        e.preventDefault();
+        const register = await fetch('http://localhost:9000/auth/register', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(this.state),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const parsedRegister = await register.json();
+        console.log(parsedRegister, ' response from register');
+
+        if (parsedRegister.status.message === 'User Logged In') {
+            console.log('==== logged in ======')
+            console.log(this.state, 'this.state')
+        }
+        this.setState({
+            isLoggedIn: true
+        })
+    }
     render() {
-    const isLoggedIn = this.state.currentUser.isLoggedIn;
-    let loginButton;
-    let addEmployee;
-    let registerButton;
-    let employeeList;
-    let div;
+        // const isLoggedIn = this.state.currentUser.isLoggedIn;
+        const allInterface = () => {
+            return (
+                <div>
+                    <Register />
+                    <Login />
+                    <CreateEmployee addEmployee={this.addEmployee} />
+                    <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
+                    <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} handleFormChange={this.handleFormChange} editEmployee={this.EditEmployee} /> : null}</div>
 
-    //if logged in, should take you to 'edit'(create employee)
-    //as well as a logout button
-    if(this.state.isLoggedIn){
-        loginButton = <button action='/' onClick={this.handleLogoutClick}> Logout</button>
-        addEmployee = <CreateEmployee addEmployee={this.addEmployee}/>
-        employeeList = <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
-           
-    //if logged out, should see reg and login forms    
-    } else {
-        registerButton = <button onClick={this.handleRegister}>Register</button>
-        loginButton = <button action='/login' onClick={this.handleLoginClick}> Login</button>
-        addEmployee = <Register /> 
-    }
+                </div>
+            )
+        }
         return (
             <div className="employeeContainer">
-            {registerButton}
-            {loginButton}
-            {addEmployee}
-            {employeeList}
-            {div}
+                {allInterface()}
             </div>
         );
     }
 }
 
 export default MainContainer;
-                
+
