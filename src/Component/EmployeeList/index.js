@@ -29,7 +29,7 @@ const EmployeeList = (props) => {
                 </span><br /><br />
                 <span>
                     <button onClick={props.deleteEmployee.bind(null, employee)}>delete</button>
-                    <button >edit</button>
+                    <button onClick={props.showEmployee.bind(null, employee)}>View Employee</button>
                 </span>
 
             </li>
