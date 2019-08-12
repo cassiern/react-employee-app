@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 import CreationEmployee from '../CreateEmployee';
+=======
+import React, {Component} from 'react';
+>>>>>>> 9f33c127dbdeb7d6883fdfe32800ab67947d0765
 import Login from '../Login/index';
-import EmployeeList from '../EmployeeList/index';
 import Register from '../Register/index';
 class Header extends Component {
+<<<<<<< HEAD
     constructor() {
         super();
         this.handleLoginClick = this.handleLoginClick.bind(this);
@@ -57,6 +61,31 @@ class Header extends Component {
             </div>
         )
     }
+=======
+	constructor(){
+		super();
+		this.state={}
+	}
+
+login =(props)=>{
+	this.props.setState({
+		isLoggedIn: true
+	})
 }
 
+
+
+
+
+
+render(){
+
+	return(
+	<div>
+		
+	</div>
+	)
+}
+>>>>>>> 9f33c127dbdeb7d6883fdfe32800ab67947d0765
+}
 export default Header;

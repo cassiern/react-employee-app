@@ -21,18 +21,9 @@ class MainContainer extends Component {
 
         }
     }
+
     componentDidMount() {
         this.getEmployees();
-    }
-    addUser = async (user, e) => {
-        e.preventDefault();
-        try {
-            console.log('need to add user to state');
-        }
-        catch (err) {
-            console.log(err, 'Err from addEmployee');
-            return err;
-        }
     }
     addEmployee = async (employee, e) => {
         e.preventDefault();
@@ -108,32 +99,90 @@ class MainContainer extends Component {
                 this.setState({
                     employees: [...employeesResponse.data]  //spread operator - takes the array and empties the contents into movies
                 })
-                console.log(this.state.employees, 'after push')
+                console.log(this.state.employees, 'after push');
             }
         } catch (err) {
             console.log(err, 'getEmployees Error');
+<<<<<<< HEAD
             // isLoggedIn: false
+=======
+>>>>>>> 9f33c127dbdeb7d6883fdfe32800ab67947d0765
         }
     }
+    afterLogin = () => {
+        return (
+            <div>
+                <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
+                <CreateEmployee addEmployee={this.addEmployee} />
+            </div>
+        )
+    }
+    handleChange = (e) => {
+        this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    }
+    handleLogoutClick = () => {
+        this.setState({
+            isLoggedIn: false
+        })
+    }
+    handleLoginClick = () => {
+        this.setState({
+            isLoggedIn: true
+        })
+    }
+    handleSubmit = async (e) => {
+        e.preventDefault();
+        const register = await fetch('http://localhost:9000/auth/register', {
+            method: 'POST',
+            credentials: 'include',
+            body: JSON.stringify(this.state),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const parsedRegister = await register.json();
+        console.log(parsedRegister, ' response from register');
+
+        if (parsedRegister.status.message === 'User Logged In') {
+            console.log('==== logged in ======')
+            console.log(this.state, 'this.state')
+        }
+        this.setState({
+            isLoggedIn: true
+        })
+    }
     render() {
-        const isLoggedIn = this.state.isLoggedIn;
-        // if(this.state.isLoggedIn){
-        //     <button action='/' onClick={this.handleLogoutClick}> Logout</button>
-        //     show = <CreationEmployee />
-        // } else {
-        //     button = <button action='/login' onClick={this.handleLoginClick}> Login</button>
-        //     show = <Register /> 
-        //     loginForm = <Login />
-        // }
+        const isLoggedIn = this.state.currentUser.isLoggedIn;
+        let loginButton;
+        let show;
+        let loginForm;
+        let addEmployee;
+        let registerButton;
+        let employeeList;
+
+        //if logged in, should take you to 'edit'(create employee)
+        //as well as a logout button
+        if (this.state.isLoggedIn) {
+            loginButton = <button action='/' onClick={this.handleLogoutClick}> Logout</button>
+            show = <CreateEmployee addEmployee={this.addEmployee} />
+            employeeList = <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
+
+            //if logged out, should see reg and login forms    
+        } else {
+            registerButton = <button action='/login' onClick={this.handleLoginClick}>Register</button>
+            loginButton = <button action='/login' onClick={this.handleLoginClick}> Login</button>
+            show = <Register />
+        }
         return (
             <div className="employeeContainer">
-                <Header />
-                <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
-                {isLoggedIn ? <CreateEmployee addEmployee={this.addEmployee} /> : <Register />}
+                {registerButton}
+                {loginButton}
+                {show}
+                {employeeList}
             </div>
         );
     }
 }
 
 export default MainContainer;
-//getEmployees={this.getEmployees()}
+
