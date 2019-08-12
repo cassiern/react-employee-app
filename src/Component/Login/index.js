@@ -21,7 +21,7 @@ class Login extends Component {
         return (
             <div>
                 <h1>Login Form</h1>
-                <form onSubmit={this.props.handleSubmit}>
+                <form onSubmit={this.props.handleLoginSubmit.bind(null, this.state)}>
                     <label>
                         Username:
                 <input type='text' name='username' value={this.state.username} placeholder="username" onChange={this.handleChange} />

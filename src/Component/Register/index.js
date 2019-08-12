@@ -1,82 +1,33 @@
 import React, { Component } from 'react';
-
 class Register extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       username: '',
       password: '',
       admin: false,
-      isLoggedIn: false
+      isLoggedIn: false,
     }
   }
   handleChange = (e) => {
     this.setState({ [e.currentTarget.name]: e.currentTarget.value });
+    console.log(this.state);
   }
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    const register = await fetch('http://localhost:9000/auth/register', {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    const parsedRegister = await register.json();
-    console.log(parsedRegister, ' response from register');
 
-    if (parsedRegister.status.message === 'User Logged In') {
-      console.log('==== logged in ======')
-      console.log(this.state, 'this.state')
-      return this.state.isLoggedIn = true;
-    }
-
-  }
   render() {
-    // let isLoggedIn = this.state.isLoggedIn;
-    // let createUser;
-    // let showReg;
-    // let showLogin;
-
     return (
-      <h1>This is my register form</h1>
-    )
+      <form onSubmit={this.props.handleRegisterSubmit.bind(null, this.state)}>
+        <h1>Form::Register A New User</h1>
+        <input type="text" name="username" placeholder="username" value={this.state.username} onChange={this.handleChange} />
+        <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.handleChange} />
+        <label>Admin:</label><input type="boolean" name="admin" placeholder="false" value={this.state.admin} onChange={this.handleChange} />
+        {/* <select name="admin" onChange={this.handleChange}>
+          <option value='false'>Yes</option>
+          <option value='true'>No</option>
+        </select> */}
+        <button type='submit'>Submit</button>
+      </form>);
   }
 }
 
 export default Register;
-
-// if (isLoggedIn) {
-
-//   return createUser = <CreateEmployee />
-
-// } else {
-//   showLogin = <Login />
-//   showReg = <Register />
-// }
-// return (
-//   <div>
-//     <h1>Register Form</h1>
-//     <form onSubmit={this.handleSubmit}>
-//       <label>
-//         Username:
-//       <input type='text' placeholder='username' name='username' onChange={this.handleChange} value={this.state.username} />
-//       </label>
-//       <label>
-//         Password:
-//         <input type='password' placeholder='password' name='password' onChange={this.handleChange} />
-//       </label>
-
-//       <label>
-//         Admin:
-//         <select>
-//           <option value='false'>No</option>
-//           <option value='true'>Yes</option>
-//         </select>
-//       </label>
-//       <button >Register User</button>
-//     </form>
-//     {createUser}
-//     <Login />
-//   </div>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Login from '../Login/index';
 import CreateEmployee from '../CreateEmployee/index';
 import EmployeeList from '../EmployeeList/index';
-// import Header from '../Header/index';
 import Register from '../Register/index';
 
 import EditEmployee from '../EditEmployee/index';
@@ -43,29 +42,7 @@ class MainContainer extends Component {
     componentDidMount() {
         this.getEmployees(this.state.employees);
     }
-    // handleLoginSubmit = async (e) => {
-    //     e.preventDefault();
 
-    //     const login = await fetch('http://localhost:9000/auth/login', {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         body: JSON.stringify(this.state),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     });
-
-    //     const parsedlogin = await login.json();
-
-    //     console.log(parsedlogin, ' response from login');
-
-    //     if (parsedlogin.status.message === 'User Logged In') {
-    //         console.log('logged in')
-    //     }
-    //     this.setState({
-    //         isLoggedIn: { ...this.state.currentUser.isLoggedIn]: true}
-    //     })
-    // }
     addEmployee = async (employee, e) => {
         e.preventDefault();
         try {
@@ -219,40 +196,52 @@ class MainContainer extends Component {
             isLoggedIn: false
         })
     }
-    handleLoginClick = () => {
-        this.setState({
-            isLoggedIn: true
-        })
 
-    }
-    handleSubmit = async (e) => {
+    handleLoginSubmit = async (user, e) => {
         e.preventDefault();
-        const register = await fetch('http://localhost:9000/auth/register', {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify(this.state),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const parsedRegister = await register.json();
-        console.log(parsedRegister, ' response from register');
-
-        if (parsedRegister.status.message === 'User Logged In') {
-            console.log('==== logged in ======')
-            console.log(this.state, 'this.state')
-        }
-        this.setState({
-            isLoggedIn: true
-        })
+        console.log('user passed up', user)
     }
+
+    handleRegisterSubmit = async (newUser, e) => {
+        e.preventDefault();
+
+        console.log('new user passed up', newUser)
+        try {
+            const createUser = await fetch('http://localhost:9000/auth/register', {
+                method: 'POST',
+                credentials: 'include',
+                body: JSON.stringify(newUser),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            console.log('Created User Response>>>', createUser);
+            if (createUser.status !== 200) {
+                throw Error('resource not found')
+            } else {
+                newUser.isLoggedIn = true
+                const createUserResponse = await createUser.json();
+                // console.log(createUserResponse.data, '<<<response to New User Route')
+                console.log(createUserResponse, 'sever response')
+                this.setState({
+                    currentUser: newUser
+                })
+                console.log(this.state.currentUser, 'current user after ping back from server')
+            }
+        }
+        catch (err) {
+            console.log(err)
+            return err;
+        }
+
+    }
+
     render() {
-        // const isLoggedIn = this.state.currentUser.isLoggedIn;
         const allInterface = () => {
             return (
                 <div>
-                    <Register />
-                    <Login />
+                    <Register handleRegisterSubmit={this.handleRegisterSubmit} />
+                    <Login handleLoginSubmit={this.handleLoginSubmit} />
                     <CreateEmployee addEmployee={this.addEmployee} />
                     <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
                     <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} handleFormChange={this.handleFormChange} editEmployee={this.EditEmployee} /> : null}</div>
@@ -269,4 +258,3 @@ class MainContainer extends Component {
 }
 
 export default MainContainer;
-
