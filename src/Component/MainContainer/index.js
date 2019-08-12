@@ -93,6 +93,7 @@ class MainContainer extends Component {
         }
     }
     getEmployees = async () => {
+        console.log(this.state.currentUser);
         try {
             const responseGetEmployees = await fetch('http://localhost:9000/api/v1/employee', {
                 method: "GET",
@@ -111,25 +112,24 @@ class MainContainer extends Component {
             }
         } catch (err) {
             console.log(err, 'getEmployees Error');
-            isLoggedIn: false
+            // isLoggedIn: false
         }
     }
     render() {
-    const isLoggedIn = this.state.isLoggedIn;
-    // if(this.state.isLoggedIn){
-    //     <button action='/' onClick={this.handleLogoutClick}> Logout</button>
-    //     show = <CreationEmployee />
-    // } else {
-    //     button = <button action='/login' onClick={this.handleLoginClick}> Login</button>
-    //     show = <Register /> 
-    //     loginForm = <Login />
-    // }
+        const isLoggedIn = this.state.isLoggedIn;
+        // if(this.state.isLoggedIn){
+        //     <button action='/' onClick={this.handleLogoutClick}> Logout</button>
+        //     show = <CreationEmployee />
+        // } else {
+        //     button = <button action='/login' onClick={this.handleLoginClick}> Login</button>
+        //     show = <Register /> 
+        //     loginForm = <Login />
+        // }
         return (
             <div className="employeeContainer">
                 <Header />
                 <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
                 {isLoggedIn ? <CreateEmployee addEmployee={this.addEmployee} /> : <Register />}
-
             </div>
         );
     }
