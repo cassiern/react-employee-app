@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Login from '../Login/index';
+// import Login from '../Login/index';
 import CreateEmployee from '../CreateEmployee/index';
 import EmployeeList from '../EmployeeList/index';
-import Header from '../Header/index';
+// import Header from '../Header/index';
 import Register from '../Register/index';
-
+import EditEmployee from '../EditEmployee';
 
 class MainContainer extends Component {
     constructor(props) {
@@ -73,7 +73,7 @@ class MainContainer extends Component {
                 console.log(deleteEmployeeResponse, '<<<response to delete Employee Route')
 
                 this.setState({
-                    movies: this.state.employees.filter((employee) => employee._id !== deletedEmployee._id)
+                    employees: this.state.employees.filter((employee) => employee._id !== deletedEmployee._id)
                 })
                 console.log(this.state.employees, 'Employees array')
             }
@@ -123,6 +123,16 @@ handleChange = (e) => {
         isLoggedIn: true
     })
   }
+handleRegister = () => {
+    this.setState({
+        isLoggedIn: true
+    })
+}
+
+
+
+
+
   handleSubmit = async (e) => {
     e.preventDefault();
     const register = await fetch('http://localhost:9000/auth/register', {
@@ -147,31 +157,31 @@ handleChange = (e) => {
     render() {
     const isLoggedIn = this.state.currentUser.isLoggedIn;
     let loginButton;
-    let show;
-    let loginForm;
     let addEmployee;
     let registerButton;
     let employeeList;
+    let div;
 
     //if logged in, should take you to 'edit'(create employee)
     //as well as a logout button
     if(this.state.isLoggedIn){
         loginButton = <button action='/' onClick={this.handleLogoutClick}> Logout</button>
-        show = <CreateEmployee addEmployee={this.addEmployee}/>
-        employeeList = <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees}/>
-        
+        addEmployee = <CreateEmployee addEmployee={this.addEmployee}/>
+        employeeList = <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
+           
     //if logged out, should see reg and login forms    
     } else {
-        registerButton = <button action='/login' onClick={this.handleLoginClick}>Register</button>
+        registerButton = <button onClick={this.handleRegister}>Register</button>
         loginButton = <button action='/login' onClick={this.handleLoginClick}> Login</button>
-        show = <Register /> 
+        addEmployee = <Register /> 
     }
         return (
             <div className="employeeContainer">
             {registerButton}
             {loginButton}
-            {show}
+            {addEmployee}
             {employeeList}
+            {div}
             </div>
         );
     }
