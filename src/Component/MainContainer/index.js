@@ -17,8 +17,24 @@ class MainContainer extends Component {
                 admin: false,
                 userId: "",
                 isLoggedIn: false,
-            }
-
+            },
+            showEmployeeModal: false,
+            employeeToEdit: {
+                _id: null,
+                username: '',
+                password: '',
+                admin: false,
+                userId: "",
+                isLoggedIn: false,
+            },
+            employeeToDelete: {
+                _id: null,
+                username: '',
+                password: '',
+                admin: false,
+                userId: "",
+                isLoggedIn: false,
+            },
         }
     }
 
@@ -52,6 +68,62 @@ class MainContainer extends Component {
             console.log(err, 'Err from addEmployee');
             return err;
         }
+    }
+    showEmployee = (employee) => {
+        console.log(employee, "employee to edit at time of Show Employee");
+        this.state.employeeToEdit = employee;
+        this.setState({
+            showEmployeeModal: !this.state.showEmployeeModal,
+        })
+        console.log(this.state.employeeToEdit, 'employeeTo Edit after setState in showEmployee')
+    }
+    EditEmployee = async (e) => {
+        e.preventDefault();
+        console.log(this.state.employeeToEdit, '<Employee to edit at time of editEmployee Calle');
+        try {
+
+            const editRequest = await fetch('http://localhost:9000/api/v1/employee/' + this.state.employeeToEdit._id, {
+                method: 'PUT',
+                credentials: 'include',
+                body: JSON.stringify(this.state.employeeToEdit),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (editRequest.status !== 200) {
+                throw Error('editRequest not working')
+            }
+
+            const editResponse = await editRequest.json();
+
+            const editedEmployeesArray = this.state.employees.map((employee) => {
+                // console.log(employee, 'data from Employee')
+                if (employee._id === editResponse.data._id) {
+                    employee = editResponse.data
+                }
+                return employee;
+            })
+            // console.log(editedEmployeeArray, 'edited Employees after Map Method')
+            /// remakes a new array after checking in editedEmployeeArray
+            this.setState({
+                employees: editedEmployeesArray,
+                showEmployeeModal: false,
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    handleFormChange = (e) => {
+
+        this.setState({
+            employeeToEdit: {
+                ...this.state.employeeToEdit,
+                [e.target.name]: e.target.value
+            }
+        })
+        //console.log(this.state.employeeToEdit, "updating of state in handlechange")
     }
     deleteEmployee = async (deletedEmployee, e) => {
         // e.preventDefault();
@@ -103,10 +175,6 @@ class MainContainer extends Component {
             }
         } catch (err) {
             console.log(err, 'getEmployees Error');
-<<<<<<< HEAD
-            // isLoggedIn: false
-=======
->>>>>>> 9f33c127dbdeb7d6883fdfe32800ab67947d0765
         }
     }
     afterLogin = () => {
@@ -154,8 +222,6 @@ class MainContainer extends Component {
     render() {
         const isLoggedIn = this.state.currentUser.isLoggedIn;
         let loginButton;
-        let show;
-        let loginForm;
         let addEmployee;
         let registerButton;
         let employeeList;
@@ -164,20 +230,19 @@ class MainContainer extends Component {
         //as well as a logout button
         if (this.state.isLoggedIn) {
             loginButton = <button action='/' onClick={this.handleLogoutClick}> Logout</button>
-            show = <CreateEmployee addEmployee={this.addEmployee} />
+            addEmployee = <CreateEmployee addEmployee={this.addEmployee} />
             employeeList = <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
-
             //if logged out, should see reg and login forms    
         } else {
             registerButton = <button action='/login' onClick={this.handleLoginClick}>Register</button>
             loginButton = <button action='/login' onClick={this.handleLoginClick}> Login</button>
-            show = <Register />
+            addEmployee = <Register />
         }
         return (
             <div className="employeeContainer">
                 {registerButton}
                 {loginButton}
-                {show}
+                {addEmployee}
                 {employeeList}
             </div>
         );
