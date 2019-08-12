@@ -1,7 +1,6 @@
 import React from 'react';
 
 const EmployeeList = (props) => {
-
     const itemStyle = {
         border: "1px solid black",
         shadowBox: "0 0 2px black",
