@@ -5,7 +5,7 @@ import EmployeeList from '../EmployeeList/index';
 // import Header from '../Header/index';
 import Register from '../Register/index';
 import EditEmployee from '../EditEmployee/index';
-
+import { Jumbotron } from 'reactstrap';
 
 class MainContainer extends Component {
     constructor(props) {
@@ -39,11 +39,9 @@ class MainContainer extends Component {
             adminUser: []
         }
     }
-
     componentDidMount() {
         this.getEmployees(this.state.employees);
     }
-
     addEmployee = async (employee, e) => {
         e.preventDefault();
         try {
@@ -186,7 +184,13 @@ class MainContainer extends Component {
     }
     handleLogoutClick = () => {
         this.setState({
-            isLoggedIn: false
+            currentUser: {
+                username: '',
+                password: '',
+                admin: false,
+                userId: "",
+                isLoggedIn: false
+            }
         })
     }
     handleLoginSubmit = async (currentUser, e) => {
@@ -245,16 +249,40 @@ class MainContainer extends Component {
         }
     }
     render() {
-        // const isLoggedIn = this.state.currentUser.isLoggedIn;
         const allInterface = () => {
+
+            const headerPage = () => {
+                return (
+                    <div>
+                        <Register handleRegisterSubmit={this.handleRegisterSubmit} />
+                        <Login handleLoginSubmit={this.handleLoginSubmit} />
+                    </div>
+                )
+            }
+            const apiPage = () => {
+                const apiStyle = {
+                    height: "33vh",
+                    backgroundColor: "lightgray"
+                }
+                return (
+                    <Jumbotron style={apiStyle}><h1>This is where the API could populate</h1></Jumbotron>
+                )
+            }
+            const adminPage = () => {
+                const currentUser = this.state.currentUser.username.toUpperCase();
+                return (
+                    <div>
+                        <header><button onClick={this.handleLogoutClick}>Log Out {currentUser}</button></header>
+                        <h1>Hello {currentUser}</h1>
+                        <CreateEmployee addEmployee={this.addEmployee} />
+                        <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
+                        <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} handleFormChange={this.handleFormChange} editEmployee={this.EditEmployee} /> : null}</div>
+                    </div>
+                )
+            }
             return (
                 <div>
-                    <Register handleRegisterSubmit={this.handleRegisterSubmit} />
-                    <Login handleLoginSubmit={this.handleLoginSubmit} />
-                    <CreateEmployee addEmployee={this.addEmployee} />
-                    <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
-                    <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} handleFormChange={this.handleFormChange} editEmployee={this.EditEmployee} /> : null}</div>
-
+                    {this.state.currentUser.isLoggedIn ? [adminPage(), apiPage()] : headerPage()}
                 </div>
             )
         }
