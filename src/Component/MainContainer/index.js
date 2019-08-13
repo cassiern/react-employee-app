@@ -36,6 +36,7 @@ class MainContainer extends Component {
                 userId: "",
                 isLoggedIn: false,
             },
+            adminUser: []
         }
     }
 
@@ -180,14 +181,6 @@ class MainContainer extends Component {
             console.log(err, 'getEmployees Error');
         }
     }
-    afterLogin = () => {
-        return (
-            <div>
-                <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
-                <CreateEmployee addEmployee={this.addEmployee} />
-            </div>
-        )
-    }
     handleChange = (e) => {
         this.setState({ [e.currentTarget.name]: e.currentTarget.value });
     }
@@ -196,12 +189,29 @@ class MainContainer extends Component {
             isLoggedIn: false
         })
     }
-
-    handleLoginSubmit = async (user, e) => {
+    handleLoginSubmit = async (currentUser, e) => {
         e.preventDefault();
-        console.log('user passed up', user)
+        console.log('user passed up', currentUser)
+        const login = await fetch('http://localhost:9000/auth/login', {
+            method: 'POST',
+            credentials: 'include', //makes sure we send a session cookie to the express-server 
+            body: JSON.stringify(currentUser),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        console.log(login)
+        const parsedLogin = await login.json();
+        console.log(parsedLogin, 'parsedLogin response from server');
+        if (parsedLogin.status.message === 'User Logged In') {
+            console.log('logged in');
+            currentUser.isLoggedIn = true
+            this.setState({
+                currentUser: currentUser
+            })
+            console.log(this.state.currentUser, 'current user after Login ping back from server')
+        }
     }
-
     handleRegisterSubmit = async (newUser, e) => {
         e.preventDefault();
 
@@ -226,35 +236,14 @@ class MainContainer extends Component {
                 this.setState({
                     currentUser: newUser
                 })
-                console.log(this.state.currentUser, 'current user after ping back from server')
+                console.log(this.state.currentUser, 'current user after Register ping back from server')
             }
         }
         catch (err) {
             console.log(err)
             return err;
         }
-        // const register = await fetch('http://localhost:9000/auth/register', {
-        //     method: 'POST',
-        //     credentials: 'include', //makes sure we send a session cookie to the express-server 
-        //     body: JSON.stringify(newUser),
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     }
-        // })
-        // console.log(register.body, "register", newUser, 'newUser')
-        // const parsedRegister = await register.json();
-        // console.log(parsedRegister.data, 'data after submission and return')
-        // console.log(parsedRegister, 'response from server');
-        // // if (parsedRegister.status.message === 'User Logged In') {
-        // //     const newUser = 
-        // //     this.setState({
-        // //         currentUser: { ...this.state.currentUser, newUser }
-        // //     })
-        // //     console.log(this.state.currentUser, 'currentUserAfterLogin');
-        // // }
-
     }
-
     render() {
         // const isLoggedIn = this.state.currentUser.isLoggedIn;
         const allInterface = () => {
@@ -279,26 +268,4 @@ class MainContainer extends Component {
 
 export default MainContainer;
 
-//Unused Code
-// handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const register = await fetch('http://localhost:9000/auth/register', {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         body: JSON.stringify(this.state),
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         }
-    //     });
-    //     const parsedRegister = await register.json();
-    //     console.log(parsedRegister, ' response from register');
-
-    //     if (parsedRegister.status.message === 'User Logged In') {
-    //         console.log('==== logged in ======')
-    //         console.log(this.state, 'this.state')
-    //     }
-    //     this.setState({
-    //         isLoggedIn: true
-    //     })
-    // }
 
