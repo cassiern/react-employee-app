@@ -39,15 +39,3 @@ const EmployeeList = (props) => {
 }
 
 export default EmployeeList;
-
-
-//Unused Code
-// const employeeObject = Object.entries(employee)
-// console.log(employeeObject)
-// const displayObject = employeeObject.map((item) => {
-//     return (
-//         < li key={item[0]}>
-//             <label>{item[0]}</label>: {item[1]}
-//         </li >
-//     )
-// });

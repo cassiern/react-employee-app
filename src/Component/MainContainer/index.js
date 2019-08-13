@@ -3,7 +3,6 @@ import Login from '../Login/index';
 import CreateEmployee from '../CreateEmployee/index';
 import EmployeeList from '../EmployeeList/index';
 import Register from '../Register/index';
-
 import EditEmployee from '../EditEmployee/index';
 
 
@@ -244,7 +243,9 @@ class MainContainer extends Component {
                     <Login handleLoginSubmit={this.handleLoginSubmit} />
                     <CreateEmployee addEmployee={this.addEmployee} />
                     <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
-                    <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} handleFormChange={this.handleFormChange} editEmployee={this.EditEmployee} /> : null}</div>
+                    <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} 
+                    handleFormChange={this.handleFormChange} 
+                    editEmployee={this.EditEmployee} /> : null}</div>
 
                 </div>
             )

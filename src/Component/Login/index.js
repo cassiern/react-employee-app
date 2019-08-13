@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'reactstrap';
 import '../../App.css';
 
+
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -20,17 +21,10 @@ class Login extends Component {
     render() {
         return (
             <div>
-                <h1>Login Form</h1>
-                <form onSubmit={this.props.handleLoginSubmit.bind(null, this.state)}>
-                    <label>
-                        Username:
+                <form onSubmit={this.props.handleLoginSubmit.bind(null, this.state)}>   
                 <input type='text' name='username' value={this.state.username} placeholder="username" onChange={this.handleChange} />
-                    </label>
-                    <label>
-                        Password:
                 <input type='password' name='password' value={this.state.password} placeholder="password" onChange={this.handleChange} />
-                    </label>
-                    <Button type="submit" color="warning">Login</Button>
+                    <Button type="submit" color="warning" className="loginButton">Login</Button>
                 </form>
             </div>
         );
