@@ -4,7 +4,7 @@ import CreateEmployee from '../CreateEmployee/index';
 import EmployeeList from '../EmployeeList/index';
 import Register from '../Register/index';
 import EditEmployee from '../EditEmployee/index';
-
+import { Jumbotron } from 'reactstrap';
 
 class MainContainer extends Component {
     constructor(props) {
@@ -35,13 +35,12 @@ class MainContainer extends Component {
                 userId: "",
                 isLoggedIn: false,
             },
+            adminUser: []
         }
     }
-
     componentDidMount() {
         this.getEmployees(this.state.employees);
     }
-
     addEmployee = async (employee, e) => {
         e.preventDefault();
         try {
@@ -179,28 +178,43 @@ class MainContainer extends Component {
             console.log(err, 'getEmployees Error');
         }
     }
-    afterLogin = () => {
-        return (
-            <div>
-                <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} />
-                <CreateEmployee addEmployee={this.addEmployee} />
-            </div>
-        )
-    }
     handleChange = (e) => {
         this.setState({ [e.currentTarget.name]: e.currentTarget.value });
     }
     handleLogoutClick = () => {
         this.setState({
-            isLoggedIn: false
+            currentUser: {
+                username: '',
+                password: '',
+                admin: false,
+                userId: "",
+                isLoggedIn: false
+            }
         })
     }
-
-    handleLoginSubmit = async (user, e) => {
+    handleLoginSubmit = async (currentUser, e) => {
         e.preventDefault();
-        console.log('user passed up', user)
+        console.log('user passed up', currentUser)
+        const login = await fetch('http://localhost:9000/auth/login', {
+            method: 'POST',
+            credentials: 'include', //makes sure we send a session cookie to the express-server 
+            body: JSON.stringify(currentUser),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        console.log(login)
+        const parsedLogin = await login.json();
+        console.log(parsedLogin, 'parsedLogin response from server');
+        if (parsedLogin.status.message === 'User Logged In') {
+            console.log('logged in');
+            currentUser.isLoggedIn = true
+            this.setState({
+                currentUser: currentUser
+            })
+            console.log(this.state.currentUser, 'current user after Login ping back from server')
+        }
     }
-
     handleRegisterSubmit = async (newUser, e) => {
         e.preventDefault();
 
@@ -225,28 +239,49 @@ class MainContainer extends Component {
                 this.setState({
                     currentUser: newUser
                 })
-                console.log(this.state.currentUser, 'current user after ping back from server')
+                console.log(this.state.currentUser, 'current user after Register ping back from server')
             }
         }
         catch (err) {
             console.log(err)
             return err;
         }
-
     }
-
     render() {
         const allInterface = () => {
+
+            const headerPage = () => {
+                return (
+                    <div>
+                        <Register handleRegisterSubmit={this.handleRegisterSubmit} />
+                        <Login handleLoginSubmit={this.handleLoginSubmit} />
+                    </div>
+                )
+            }
+            const apiPage = () => {
+                const apiStyle = {
+                    height: "33vh",
+                    backgroundColor: "lightgray"
+                }
+                return (
+                    <Jumbotron style={apiStyle}><h1>This is where the API could populate</h1></Jumbotron>
+                )
+            }
+            const adminPage = () => {
+                const currentUser = this.state.currentUser.username.toUpperCase();
+                return (
+                    <div>
+                        <header><button onClick={this.handleLogoutClick}>Log Out {currentUser}</button></header>
+                        <h1>Hello {currentUser}</h1>
+                        <CreateEmployee addEmployee={this.addEmployee} />
+                        <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
+                        <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} handleFormChange={this.handleFormChange} editEmployee={this.EditEmployee} /> : null}</div>
+                    </div>
+                )
+            }
             return (
                 <div>
-                    <Register handleRegisterSubmit={this.handleRegisterSubmit} />
-                    <Login handleLoginSubmit={this.handleLoginSubmit} />
-                    <CreateEmployee addEmployee={this.addEmployee} />
-                    <EmployeeList deleteEmployee={this.deleteEmployee} employeeList={this.state.employees} showEmployee={this.showEmployee} />
-                    <div>{this.state.showEmployeeModal ? <EditEmployee employeeToEdit={this.state.employeeToEdit} 
-                    handleFormChange={this.handleFormChange} 
-                    editEmployee={this.EditEmployee} /> : null}</div>
-
+                    {this.state.currentUser.isLoggedIn ? [adminPage(), apiPage()] : headerPage()}
                 </div>
             )
         }
