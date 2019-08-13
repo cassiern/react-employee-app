@@ -1,0 +1,22 @@
+//Unused Code
+// handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const register = await fetch('http://localhost:9000/auth/register', {
+    //         method: 'POST',
+    //         credentials: 'include',
+    //         body: JSON.stringify(this.state),
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     });
+    //     const parsedRegister = await register.json();
+    //     console.log(parsedRegister, ' response from register');
+
+    //     if (parsedRegister.status.message === 'User Logged In') {
+    //         console.log('==== logged in ======')
+    //         console.log(this.state, 'this.state')
+    //     }
+    //     this.setState({
+    //         isLoggedIn: true
+    //     })
+    // }
