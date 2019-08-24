@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
+
+
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -16,16 +20,11 @@ class Register extends Component {
 
   render() {
     return (
-      <form onSubmit={this.props.handleRegisterSubmit.bind(null, this.state)}>
-        <h1>Form::Register A New User</h1>
+      <form className="registerForm" onSubmit={this.props.handleRegisterSubmit.bind(null, this.state)}>
         <input type="text" name="username" placeholder="username" value={this.state.username} onChange={this.handleChange} />
         <input type="password" name="password" placeholder="password" value={this.state.password} onChange={this.handleChange} />
         <label>Admin:</label><input type="boolean" name="admin" placeholder="false" value={this.state.admin} onChange={this.handleChange} />
-        {/* <select name="admin" onChange={this.handleChange}>
-          <option value='false'>Yes</option>
-          <option value='true'>No</option>
-        </select> */}
-        <button type='submit'>Submit</button>
+        <Button type='submit' color="warning" className="registerButton">Register</Button>
       </form>);
   }
 }

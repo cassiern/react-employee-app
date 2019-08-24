@@ -1,4 +1,7 @@
-import React from 'react';
+
+import React, { Component } from 'react';
+import { Button } from 'reactstrap';
+
 
 const EmployeeList = (props) => {
     const itemStyle = {
@@ -6,20 +9,21 @@ const EmployeeList = (props) => {
         shadowBox: "0 0 2px black",
         listStyle: "none",
         padding: "1rem",
-        width: "150px"
+        width: "150px",
+        height: "375px"
     }
     const displayEmployeeList = props.employeeList.map((employee) => {
         console.log(employee, 'employee passsed to displayEmployee');
         return (
-            <li style={itemStyle} key={employee._id}>
+            <li className='employeeList' style={itemStyle} key={employee._id}>
                 <h1>{employee.title} </h1>
                 <span>
                     <strong><label>Employee Name:   </label></strong>{employee.name}<br /><br />
                     <strong><label> Department:   </label></strong>{employee.department}
                 </span><br /><br />
                 <span>
-                    <button onClick={props.deleteEmployee.bind(null, employee)}>delete</button>
-                    <button onClick={props.showEmployee.bind(null, employee)}>View Employee</button>
+                    <Button outline color="warning listButton" onClick={props.deleteEmployee.bind(null, employee)}>delete</Button>
+                    <Button outline color="warning listButton" onClick={props.showEmployee.bind(null, employee)}>View Employee</Button>
                 </span>
 
             </li>
@@ -35,15 +39,3 @@ const EmployeeList = (props) => {
 }
 
 export default EmployeeList;
-
-
-//Unused Code
-// const employeeObject = Object.entries(employee)
-// console.log(employeeObject)
-// const displayObject = employeeObject.map((item) => {
-//     return (
-//         < li key={item[0]}>
-//             <label>{item[0]}</label>: {item[1]}
-//         </li >
-//     )
-// });

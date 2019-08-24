@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100vh;
 }
 
 .App-logo {
@@ -19,6 +20,7 @@
   color: white;
 }
 
+
 #root {
   display: flex;
   background-color: cadetblue;
@@ -26,12 +28,65 @@
   flex-direction: column; 
 }
 
+.listButton {
+  display: flex;
+  margin: 10px;
+}
+
+button, input, optgroup, select, textarea, label, form {
+  display: flex;
+  font-family: inherit;
+  margin: 10px;
+  justify-content: center;
+  color: black;
+  font-weight: bold;
+}
+
+.registerForm {
+  max-height: 3rem;
+  justify-content: center;
+}
+.registerButton {
+  padding: 0 .5rem;
+  text-align: center;
+  justify-content: center;
+  max-height: 3rem;
+}
+
+.loginButton {
+  padding: 0 .5rem;
+  max-height: 2rem;
+  text-align: center;
+}
+.createButton {
+  padding: .5rem .5rem;
+  max-height: 3rem;
+  min-height: 1rem;
+}
+.editButton {
+  max-height: 2rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 .App-link {
   color: #61dafb;
 }
+
 
 @keyframes App-logo-spin {
   from {

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Button } from 'reactstrap';
+
 
 class CreateEmployee extends Component {
     constructor(props) {
@@ -18,24 +20,19 @@ class CreateEmployee extends Component {
     }
     render() {
         const formStyle = {
-            // listStyle: "none",
             padding: "1rem",
         }
         const colStyle = {
-            // listStyle: "none",
             padding: "1rem 4rem",
             display: "flex",
             flexDirection: "column",
         }
         const rowStyle = {
-            // listStyle: "none",
             display: "flex",
             justifyContent: "center",
         }
         return (
             <form style={formStyle} onSubmit={this.props.addEmployee.bind(null, this.state)}>
-                <h1>This is Employee Creation Form</h1>
-
                 <div className="row" style={rowStyle}>
                     <div className="col" style={colStyle}>
                         <label>Employee Name:</label>
@@ -52,8 +49,7 @@ class CreateEmployee extends Component {
                         <div><input type="text" name="annualSalary" value={this.state.annualSalary} placeholder="Employee Salary " onChange={this.handleChange} /></div>
                     </div>
                 </div>
-
-                <button type="submit">Create Employee</button>
+                <Button type="submit" outline color="warning" className="createButton">Create Employee</Button>
             </form >
 
         );
